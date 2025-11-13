@@ -1,120 +1,100 @@
-# Posts Web App
+# Web Development Final Project - _Post Web App_
 
-A full-featured React + Supabase posts web app with create, read, update, delete operations, comments, upvotes, search, and sorting.
+Submitted by: **Viet Minh Hieu Nguyen**
 
-## Features
+This web app: **Allows users to create, edit, delete, and search for posts**
 
-- **Create Posts**: Form to create posts with title (required), content, and image URL
-- **Home Feed**: Displays all posts with creation time, title, and upvote count
-- **Search & Sort**: Search posts by title and sort by creation time or upvotes
-- **Post Detail Page**: View full post with content, image, comments, and upvote button
-- **Edit/Delete**: Edit or delete your posts from the post detail or edit pages
-- **Comments**: Leave comments on any post
-- **Upvotes**: Upvote posts unlimited times (each click increases count by 1)
+Time spent: **8** hours spent in total
 
-## Setup
+## Required Features
 
-### 1. Install Dependencies
+The following **required** functionality is completed:
 
-```bash
-npm install
-```
+- [x] **Web app includes a create form that allows the user to create posts**
+  - Form requires users to add a post title
+  - Forms should have the _option_ for users to add:
+    - additional textual content
+    - an image added as an external image URL
+- [x] **Web app includes a home feed displaying previously created posts**
+  - Web app must include home feed displaying previously created posts
+  - By default, each post on the posts feed should show only the post's:
+    - creation time
+    - title
+    - upvotes count
+  - Clicking on a post should direct the user to a new page for the selected post
+- [x] **Users can view posts in different ways**
+  - Users can sort posts by either:
+    - creation time
+    - upvotes count
+  - Users can search for posts by title
+- [x] **Users can interact with each post in different ways**
 
-### 2. Configure Supabase
+  - The app includes a separate post page for each created post when clicked, where any additional information is shown, including:
+    - content
+    - image
+    - comments
+  - Users can leave comments underneath a post on the post page
+  - Each post includes an upvote button on the post page.
+    - Each click increases the post's upvotes count by one
+    - Users can upvote any post any number of times
 
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-3. Add your Supabase credentials to `.env`:
-   ```
-   VITE_SUPABASE_URL=your_supabase_project_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
+- [x] **A post that a user previously created can be edited or deleted from its post pages**
+  - After a user creates a new post, they can go back and edit the post
+  - A previously created post can be deleted from its post page
 
-### 3. Create Database Tables
+The following **optional** features are implemented:
 
-Run this SQL in your Supabase SQL Editor:
+- [ ] Web app implements pseudo-authentication
+  - Users can only edit and delete posts or delete comments by entering the secret key, which is set by the user during post creation
+  - **or** upon launching the web app, the user is assigned a random user ID. It will be associated with all posts and comments that they make and displayed on them
+  - For both options, only the original user author of a post can update or delete it
+- [ ] Users can repost a previous post by referencing its post ID. On the post page of the new post
+  - Users can repost a previous post by referencing its post ID
+  - On the post page of the new post, the referenced post is displayed and linked, creating a thread
+- [ ] Users can customize the interface
+  - e.g., selecting the color scheme or showing the content and image of each post on the home feed
+- [ ] Users can add more characterics to their posts
+  - Users can share and view web videos
+  - Users can set flags such as "Question" or "Opinion" while creating a post
+  - Users can filter posts by flags on the home feed
+  - Users can upload images directly from their local machine as an image file
+- [ ] Web app displays a loading animation whenever data is being fetched
 
-```sql
--- Create posts table
-CREATE TABLE posts (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  title TEXT NOT NULL,
-  content TEXT,
-  image_url TEXT,
-  upvotes INTEGER DEFAULT 0
-);
+The following **additional** features are implemented:
 
--- Create comments table
-CREATE TABLE comments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
-  content TEXT NOT NULL
-);
+- [ ] List anything else that you added to improve the site's functionality!
 
--- Enable Row Level Security (RLS)
-ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+## Video Walkthrough
 
--- Create policies for public access (adjust as needed for your use case)
-CREATE POLICY "Enable read access for all users" ON posts FOR SELECT USING (true);
-CREATE POLICY "Enable insert for all users" ON posts FOR INSERT WITH CHECK (true);
-CREATE POLICY "Enable update for all users" ON posts FOR UPDATE USING (true);
-CREATE POLICY "Enable delete for all users" ON posts FOR DELETE USING (true);
+Here's a walkthrough of implemented user stories:
 
-CREATE POLICY "Enable read access for all users" ON comments FOR SELECT USING (true);
-CREATE POLICY "Enable insert for all users" ON comments FOR INSERT WITH CHECK (true);
-```
+<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-### 4. Run Development Server
+<!-- Replace this with whatever GIF tool you used! -->
 
-```bash
-npm run dev
-```
+GIF created with ...
 
-Open http://localhost:5173 to view the app.
+<!-- Recommended tools:
+[Kap](https://getkap.co/) for macOS
+[ScreenToGif](https://www.screentogif.com/) for Windows
+[peek](https://github.com/phw/peek) for Linux. -->
 
-## Routes
+## Notes
 
-- `/` - Home feed (list all posts with search and sort)
-- `/create` - Create new post
-- `/post/:id` - View post detail with comments
-- `/edit/:id` - Edit existing post
+Describe any challenges encountered while building the app.
 
-## Tech Stack
+## License
 
-- **React 19** - UI framework
-- **Vite** - Build tool
-- **React Router** - Client-side routing
-- **Supabase** - Backend database and authentication
-- **CSS** - Styling
+    Copyright [2025] [Viet Minh Hieu Nguyen]
 
-## Database Schema
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-### `posts` table
+        http://www.apache.org/licenses/LICENSE-2.0
 
-- `id` (UUID, primary key)
-- `created_at` (timestamp)
-- `title` (text, required)
-- `content` (text, optional)
-- `image_url` (text, optional)
-- `upvotes` (integer, default 0)
-
-### `comments` table
-
-- `id` (UUID, primary key)
-- `created_at` (timestamp)
-- `post_id` (UUID, foreign key to posts)
-- `content` (text, required)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
